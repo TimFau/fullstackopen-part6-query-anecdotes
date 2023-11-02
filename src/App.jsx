@@ -1,5 +1,7 @@
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
 
 const App = () => {
 
@@ -7,13 +9,25 @@ const App = () => {
     console.log('vote')
   }
 
-  const anecdotes = [
-    {
-      "content": "If it hurts, do it more often",
-      "id": "47145",
-      "votes": 0
-    },
-  ]
+  const anecdotesResult = useQuery({
+    queryKey: ['anecdotes'],
+    queryFn: () => {
+      return axios.get('http://localhost:3001/anecdotes').then(res => {
+        console.log(res.data)
+        return res.data
+      })
+    }
+  })
+
+  if ( anecdotesResult.isLoading ) {
+    return <div>Loading anecdotes...</div>
+  }
+
+  if ( anecdotesResult.isError ) {
+    return <div>Anecdote service is not available due to server error</div>
+  }
+
+  const anecdotes = anecdotesResult.data
 
   return (
     <div>
@@ -21,7 +35,6 @@ const App = () => {
     
       <Notification />
       <AnecdoteForm />
-    
       {anecdotes.map(anecdote =>
         <div key={anecdote.id}>
           <div>
