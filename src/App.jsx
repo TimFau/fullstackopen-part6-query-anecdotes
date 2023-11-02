@@ -27,6 +27,8 @@ const App = () => {
     return <div>Anecdote service is not available due to server error</div>
   }
 
+  console.log('anecdotesResult', anecdotesResult)
+
   const anecdotes = anecdotesResult.data
 
   return (
@@ -36,6 +38,7 @@ const App = () => {
       <Notification />
       <AnecdoteForm />
       {anecdotes.map(anecdote =>
+        anecdote &&
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
