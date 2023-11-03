@@ -15,6 +15,9 @@ const AnecdoteForm = () => {
       console.log('onSuccess')
       queryClient.invalidateQueries(['anecdotes'])
       dispatch({ type: 'new' , content: content.content })
+    },
+    onError:  () => {
+      dispatch({ type: 'anecdotError'})
     }
   })
 

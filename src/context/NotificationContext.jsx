@@ -2,22 +2,26 @@ import { createContext, useReducer } from "react";
 
 const notificationReducer = (state, action) => {
     console.log('notificationReducer', state, action)
-    if (action.type === 'vote') {
-        return {
-            message: `You voted for "${action.content}"`
-        }
+    switch (action.type) {
+        case 'vote':
+            return {
+                message: `You voted for "${action.content}"`
+            }
+        case 'new':
+            return {
+                message: `You created "${action.content}"`
+            }
+        case 'anecdotError':
+            return {
+                message: 'Anecdote too short, must be 5 characters or longer.'
+            }
+        case 'clear':
+            return {
+                message: ''
+            }
+        default:
+            return state
     }
-    if (action.type === 'new') {
-        return {
-            message: `You created "${action.content}"`
-        }
-    }
-    if (action.type === 'clear') {
-        return {
-            message: ''
-        }
-    }
-    return state
 }
 
 const NotificationContext = createContext(null);
